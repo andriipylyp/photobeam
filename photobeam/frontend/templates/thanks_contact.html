@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Contact us - submitted{% endblock %}
+{% block content %}
+<section class="thanks-contact">
+    <h1>Thank You!</h1>
+    <p>Your message has been received. You will be redirected to the homepage in 5 seconds.</p>
+    <p>If you are not redirected, click <a href="{% url 'index' %}">here</a>.</p>
+</section>
+
+<script>
+    // Redirect to the homepage after 5 seconds
+    setTimeout(() => {
+        window.location.href = "{% url 'index' %}";
+    }, 5000);
+</script>
+{% endblock %}

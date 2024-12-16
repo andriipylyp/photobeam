@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<section class="services-page">
+    <div class="intro">
+      <h1>Our Services</h1>
+      <p>
+        At <strong>{{settings.app_name}}</strong>, we simplify event memory sharing with 
+        real-time photo uploads, secure access, and effortless downloads.
+      </p>
+    </div>
+  
+    <div class="core-services">
+        <h2>Core Services</h2>
+        <div class="slick-slider">
+            <div class="service-block">
+                <i class="fas fa-cloud"></i>
+                <h3>Cloud Album Creation</h3>
+                <p>Customize your album for any event.</p>
+              </div>
+              <div class="service-block">
+                <i class="fas fa-qrcode"></i>
+                <h3>QR Code Integration</h3>
+                <p>Simple guest access with a unique QR code.</p>
+              </div>
+              <div class="service-block">
+                <i class="fas fa-camera"></i>
+                <h3>Real-Time Photo Sharing</h3>
+                <p>Upload photos and videos as the event unfolds.</p>
+              </div>
+              <div class="service-block">
+                <i class="fas fa-lock"></i>
+                <h3>Privacy & Security</h3>
+                <p>Albums are accessible only to those with the QR code.</p>
+              </div>
+              <div class="service-block">
+                <i class="fas fa-download"></i>
+                <h3>Post-Event Downloads</h3>
+                <p>Hosts can download the entire album.</p>
+              </div>
+        </div>
+      </div>
+  
+    <div class="service-packages">
+    <h2>Service Packages</h2>
+    <div class="package">
+        <div class="package-icon">
+        <i class="fas fa-images"></i>
+        </div>
+        <div class="package-details">
+        <h3>Basic Package</h3>
+        <p><strong>500 images/event</strong> for a fixed price of <strong>€20</strong>.</p>
+        <p>Perfect for gatherings or personal events. Enjoy high-quality image sharing and storage with ease!</p>
+        </div>
+        <a href="{% url 'profile' %}"><button class="btn-select-package">Order now!</button></a>
+    </div>
+    </div>
+  
+    <!-- <div class="add-ons">
+      <h2>Add-Ons</h2>
+      <ul>
+        <li>Professional photo album design from uploaded content.</li>
+        <li>Long-term cloud storage for preserving albums.</li>
+        <li>Branded QR codes or customized album designs.</li>
+      </ul>
+    </div> -->
+  
+    <div class="why-choose-us">
+        <h2>Why Choose Us?</h2>
+        <div class="features-row">
+          <div class="feature-block">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>User-Friendly</h3>
+            <p>No app downloads required, just scan and share!</p>
+          </div>
+          <div class="feature-block">
+            <i class="fas fa-sync-alt"></i>
+            <h3>Live Updates</h3>
+            <p>Upload and view photos in real time as the event unfolds.</p>
+          </div>
+          <div class="feature-block">
+            <i class="fas fa-dollar-sign"></i>
+            <h3>Affordable</h3>
+            <p>Scalable solutions for events of all sizes at competitive pricing.</p>
+          </div>
+          <div class="feature-block">
+            <i class="fas fa-lock"></i>
+            <h3>Secure</h3>
+            <p>Privacy-focused, ensuring your memories are safe.</p>
+          </div>
+        </div>
+      </div>
+  
+    <div class="pricing">
+      <h2>Pricing</h2>
+      <p>Check out our transparent pricing structure and find the perfect plan for your event.</p>
+    </div>
+  
+    <div class="cta">
+      <a href="{% url 'profile' %}"><button>Create Your Album Now</button></a>
+      <a href="{% url 'contact' %}"><button>Contact Us for a Demo</button></a>
+    </div>
+  </section>
+  
+  
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load compress static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Picture</title>
+    <link rel="stylesheet" href="styles.css">
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'scss/take_picture.scss' %}" type="text/x-scss">
+    {% endcompress %}
+</head>
+<body>
+    <h1>Take a Picture</h1>
+    <form action="/upload/?album_id={{ album_id }}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image">Capture Image:</label><br>
+        <input type="file" id="image" name="image" accept="image/*" capture="environment"><br><br>
+        <button type="submit" class="btn-primary">Upload</button>
+    </form>
+    <br>
+    <a href="/album/?album_id={{ album_id }}" class="btn-secondary">Go to Album</a>
+</body>
+</html>

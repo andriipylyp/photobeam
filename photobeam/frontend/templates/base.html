@@ -1,0 +1,106 @@
+{% load compress static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.app_name }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <!-- Styles -->
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'scss/style.scss' %}" type="text/x-scss">
+    {% endcompress %}
+
+    <!-- Vendors -->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendors/slick/slick.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'vendors/slick/slick-theme.css' %}"/>
+
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+    <div class="top-bar-container">
+        <a href="#mobile">{{ settings.mobile }}</a>
+        <a href="#email">{{ settings.email }}</a>
+        {% if not user_data.auth %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+        {% else %}
+        <a href="{% url 'profile' %}">Profile</a>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- Main header -->
+<header>
+    <div class="header-container">
+        <a class="logo" href="{% url 'index' %}" style="color:inherit; text-decoration: none;
+">{{ settings.app_name }}</a>
+        <nav class="nav">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'services' %}">Services</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<main class="main">
+    {% block content %}
+    <!-- Page-specific content will go here -->
+    {% endblock %}
+</main>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-section about">
+            <h2>About {{ settings.app_name }}</h2>
+            <p>A seamless platform where event hosts create shared photo albums, and guests contribute in real-time by scanning a QR code with their phones. Easy, private, and perfect for capturing every moment of your celebration!</p>
+        </div>
+        <div class="footer-section links">
+            <h2>Quick Links</h2>
+            <ul>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                <li><a href="{% url 'faq' %}">FAQs</a></li>
+            </ul>
+        </div>
+        <div class="footer-section social">
+            <h2>Follow Us</h2>
+            <ul class="social-icons">
+                <li><a href="{{settings.facebook_url}}" >Facebook</a></li>
+                <li><a href="{{settings.twitter_url}}" >Twitter</a></li>
+                <li><a href="{{settings.linkedin_url}}" >LinkedIn</a></li>
+                <li><a href="{{settings.instagram_url}}" >Instagram</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 {{ settings.app_name }} | All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Vendors -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'vendors/slick/slick.min.js' %}"></script>
+
+<!-- Scripts -->
+<script src="{% static 'js/scripts.js' %}"></script>
+<script src="{% static 'js/album.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/services.js' %}"></script>
+
+</body>
+</html>

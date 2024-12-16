@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <img src="{% static 'mediafiles/pexels-maumascaro-801863.jpg' %}" alt="Background Image" class="hero-background" />
+    <div class="hero-content">
+      <h1>{{settings.app_name}}</h1>
+      <p>Your very best party share cloud platform!</p>
+      <a href="{% url 'about' %}" class="hero-btn">Get Started</a>
+    </div>
+</section>
+<section class="core-offerings">
+    <h2>Our Core Offerings</h2>
+    <div class="offerings">
+      <div class="offering">
+        <i class="fas fa-bolt"></i>
+        <h3>Speed</h3>
+        <p>Lightning-fast solution for your event.</p>
+      </div>
+      <div class="offering">
+        <i class="fas fa-lock"></i>
+        <h3>Security</h3>
+        <p>Top-notch protection for your data.</p>
+      </div>
+      <div class="offering">
+        <i class="fas fa-chart-line"></i>
+        <h3>Easy</h3>
+        <p>Easy to use cloud-based platform.</p>
+      </div>
+    </div>
+</section>
+{% endblock %}

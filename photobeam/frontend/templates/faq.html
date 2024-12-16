@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+<section class="faq">
+    <h1><strong>{{settings.app_name}}</strong> - Frequently Asked Questions</h1>
+    <div class="faq-item">
+      <div class="faq-question">
+        What is <strong>{{settings.app_name}}</strong>?
+      </div>
+      <div class="faq-answer">
+        <strong>{{settings.app_name}}</strong> is the ultimate solution for sharing and growing event memories effortlessly! Our platform allows event hosts and guests to create, access, and contribute to shared photo albums in real time.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        How does it work?
+      </div>
+      <div class="faq-answer">
+        <ol>
+          <li><strong>Host Setup:</strong> Event organizers create a cloud album for their special day—whether it’s a wedding, birthday, corporate event, or any celebration.</li>
+          <li><strong>Guest Access:</strong> Guests scan a unique QR code provided at the event to instantly join the album.</li>
+          <li><strong>Real-Time Contributions:</strong> Using their phones, guests can upload photos and videos directly to the album, adding their unique perspective to the event's story.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        What are the key features?
+      </div>
+      <div class="faq-answer">
+        <ul>
+          <li><strong>Easy Access:</strong> No downloads or complicated sign-ups required—just scan and share!</li>
+          <li><strong>Live Updates:</strong> View and upload memories in real time as the event unfolds.</li>
+          <li><strong>Secure & Private:</strong> Album access is restricted to those with the QR code, ensuring privacy.</li>
+          <li><strong>Download Anytime:</strong> Hosts can download the complete album after the event to relive the moments.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        Why should I use <strong>{{settings.app_name}}</strong>?
+      </div>
+      <div class="faq-answer">
+        Make your event unforgettable with a shared memory vault that grows with every snap. <strong>{{settings.app_name}}</strong> lets your guests help tell the story of your day effortlessly.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        How do I get started?
+      </div>
+      <div class="faq-answer">
+        <a href="{% url 'register' %}">Sign up</a> today and create your first album!
+      </div>
+    </div>
+  </section>
+  <script>
+    document.querySelectorAll('.faq-question').forEach((question) => {
+        question.addEventListener('click', () => {
+          const answer = question.nextElementSibling;
+          if (answer.style.display === 'block') {
+            answer.style.display = 'none';
+          } else {
+            answer.style.display = 'block';
+          }
+        });
+      });
+  </script>
+  
+{% endblock %}

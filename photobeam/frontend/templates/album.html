@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ album.name }}{% endblock %}
+
+{% block content %}
+<h1>Album: {{ album.name }}</h1>
+{% if admin %}
+<div class="album">
+    <a href="/profile/" class="btn btn-view">Back to Profile</a>
+</div>
+
+{% endif %}
+{% if images %}
+    <div id="album-container">
+        {% for image in images %}
+            <div class="image-container">
+                <img src="{{ image.image.url }}" alt="Uploaded Image" onclick="openSlideshow({{ forloop.counter0 }})">
+                {% if admin %}
+                <form id="delete-form-{{ image.id }}" action="{% url 'delete_image' image.id %}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <button class="delete-button" onclick="confirmDeletion(event, {{ image.id }})">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No images in this album yet.</p>
+{% endif %}
+
+<div id="slideshow-modal" class="slideshow-modal">
+    <button class="slideshow-close" onclick="closeSlideshow()">&times;</button>
+    <button class="slideshow-nav slideshow-prev">&#10094;</button>
+    <div class="slideshow-content">
+        {% for image in images %}
+            <img src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
+        {% endfor %}
+    </div>
+    <button class="slideshow-nav slideshow-next">&#10095;</button>
+</div>
+
+
+
+{% endblock %}

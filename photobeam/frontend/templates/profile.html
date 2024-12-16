@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div class="profile-page">
+        <div class="create-album">
+            <h2>Create Album</h2>
+            <form id="create-album-form">
+                {% csrf_token %}
+                <label for="album_name">Enter new album name:</label>
+                <input type="text" id="album_name" name="album_name" required>
+
+                <label for="album_date">Choose event date:</label>
+                <input type="date" id="album_date" name="album_date" required>
+                <button type="button" id="create-album-btn" class="btn btn-create">Buy Album</button>
+            </form>
+        </div>
+
+        <div class="albums-section">
+            <h2>Your Albums</h2>
+            {% if albums %}
+                <div class="album-grid">
+                    {% for album in albums %}
+                        <div class="album-card">
+                            <h3>{{ album.name }}</h3>
+                            <p><strong>ID:</strong> {{ album.unique_id }}</p>
+                            <p><strong>Created At:</strong> {{ album.created_at }}</p>
+                            <p><strong>Event date:</strong> {{ album.event_date }}</p>
+                            <p><strong>Count of images:</strong> {{ album.image_count }}</p>
+                            <img src="data:image/png;base64,{{ album.qr_code }}" alt="QR Code" class="qr-code" id="qr-code-{{ album.unique_id }}">
+                            <p><a href="{{ album.qr_url }}" class="qr-link">QR URL</a></p>
+                            <div class="album-actions">
+                                <a href="/album/?album_id={{ album.unique_id }}" class="btn btn-view">View Album</a>
+                                <button class="btn btn-download" onclick="downloadQRCode('{{ album.unique_id }}')">Download QR</button>
+                                <a href="{% url 'download_album' album.unique_id %}" class="btn btn-download">Download Album</a>
+                                <form action="{% url 'delete_album' album.unique_id %}" method="POST" class="delete-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No albums created yet.</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.getElementById("create-album-btn").addEventListener("click", async function () {
+            const albumName = document.getElementById("album_name").value.trim();
+            const albumDate = document.getElementById("album_date").value.trim();
+            const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+    
+            if (!albumName || !albumDate) {
+                alert("Please fill out all required fields.");
+                return;
+            }
+    
+            try {
+                const response = await fetch("{% url 'create_checkout_session' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
+                    body: JSON.stringify({ album_name: albumName, album_date: albumDate }),
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert("Error: " + (data.error || "Unknown error occurred"));
+                }
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        });
+    </script>
+    
+{% endblock %}
