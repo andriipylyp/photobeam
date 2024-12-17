@@ -12,13 +12,109 @@
 </head>
 <body>
     <h1>Take a Picture</h1>
-    <form action="/upload/?album_id={{ album_id }}" method="POST" enctype="multipart/form-data">
+    <form id="upload-form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="image">Capture Image:</label><br>
-        <input type="file" id="image" name="image" accept="image/*" capture="environment"><br><br>
+        <label for="image" class="upload-button">Take a Picture</label>
+        <input type="file" id="image" name="image" accept="image/*" capture="environment" style="display: none;">
+        <br><br>
+        <canvas id="canvas" style="border: 1px solid black;"></canvas><br>
+        <button type="button" id="rotate-left">Rotate Left</button>
+        <button type="button" id="rotate-right">Rotate Right</button><br><br>
         <button type="submit" class="btn-primary">Upload</button>
     </form>
     <br>
     <a href="/album/?album_id={{ album_id }}" class="btn-secondary">Go to Album</a>
+
+    <script>
+        let rotationAngle = 0; // Tracks current rotation
+        let img, canvas, ctx;
+
+        document.getElementById('image').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function () {
+                    canvas = document.getElementById('canvas');
+                    ctx = canvas.getContext('2d');
+                    resetCanvas();
+                };
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Rotate Left Button
+        document.getElementById('rotate-left').addEventListener('click', function () {
+            rotationAngle -= 90;
+            drawRotatedImage();
+        });
+
+        // Rotate Right Button
+        document.getElementById('rotate-right').addEventListener('click', function () {
+            rotationAngle += 90;
+            drawRotatedImage();
+        });
+
+        // Reset and Draw Image
+        function resetCanvas() {
+            rotationAngle = 0;
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+
+        // Draw Rotated Image on Canvas
+        function drawRotatedImage() {
+            const radians = (rotationAngle * Math.PI) / 180;
+
+            // Adjust canvas size for rotation
+            if (rotationAngle % 180 !== 0) {
+                canvas.width = img.height;
+                canvas.height = img.width;
+            } else {
+                canvas.width = img.width;
+                canvas.height = img.height;
+            }
+
+            // Clear and redraw rotated image
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(radians);
+            ctx.drawImage(img, -img.width / 2, -img.height / 2);
+            ctx.restore();
+        }
+
+        // Form Submission: Upload Corrected Image
+        document.getElementById('upload-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            canvas.toBlob(function (blob) {
+                const formData = new FormData();
+                formData.append('image', blob, 'rotated_image.jpg');
+
+                fetch('/upload/?album_id={{ album_id }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-CSRFToken': getCSRFToken() }
+                }).then(response => {
+                    if (response.ok) {
+                        alert('Image uploaded successfully!');
+                        window.location.reload();
+                    } else {
+                        alert('Upload failed.');
+                    }
+                }).catch(err => console.error('Error:', err));
+            }, 'image/jpeg');
+        });
+
+        // Retrieve CSRF Token
+        function getCSRFToken() {
+            return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+        }
+    </script>
 </body>
 </html>

@@ -83,3 +83,28 @@ a.btn-secondary {
         width: 90%;
     }
 }
+
+.upload-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: #007bff; // Primary blue
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+
+    &:hover {
+        background-color: #0056b3; // Darker blue on hover
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        background-color: #004085; // Even darker blue when active
+        transform: translateY(0);
+    }
+}
