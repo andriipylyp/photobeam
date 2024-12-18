@@ -1,6 +1,7 @@
 import base64
 import json
 import time
+import uuid
 import zipfile
 from io import BytesIO
 import os
@@ -76,7 +77,7 @@ def take_picture(request):
             img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
 
             # Create a unique filename for the image
-            file_name = f"{album.unique_id}_{image.name}"
+            file_name = f"{album.unique_id}_{str(uuid.uuid4())}_{image.name}"
             file_path = os.path.join(settings.MEDIA_ROOT, "uploaded_images", file_name)
 
             # Ensure the directory exists
@@ -302,3 +303,7 @@ def download_album(request, album_id):
     response = HttpResponse(buffer, content_type='application/zip')
     response['Content-Disposition'] = f'attachment; filename="{album.name}.zip"'
     return response
+
+def usage_policy(request):
+    settings, user_data = get_data(request)
+    return render(request, "usage_policy.html", {"settings": settings, "user_data": user_data})

@@ -21,4 +21,5 @@ urlpatterns = [
     path('create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),
     path('create-album-success/', views.create_album_success, name='create_album_success'),
     path('download_album/<str:album_id>/', views.download_album, name='download_album'),
+    path('usage_policy', views.usage_policy, name='usage_policy')
 ]

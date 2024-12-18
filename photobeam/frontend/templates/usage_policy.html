@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Usage Policy{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Usage Policy for <a href="http://194.182.84.188/" target="_blank">http://194.182.84.188/</a></h1>
+    <p class="last-updated">Last updated: 18.12.2024</p>
+
+    <section class="policy-section">
+        <h3>Welcome</h3>
+        <p>
+            Welcome to <a href="http://194.182.84.188/" target="_blank">http://194.182.84.188/</a>. By using our service, you agree to comply with the following terms and conditions. These terms are designed to ensure a positive and safe experience for all users while clarifying your responsibilities as a user of the service.
+        </p>
+    </section>
+
+    <section class="policy-section">
+        <h3>User Responsibility for Uploaded Content</h3>
+        <p>
+            You, as the user, are solely responsible for all content you upload through <a href="http://194.182.84.188/" target="_blank">http://194.182.84.188/</a>. By uploading a photo, you confirm that:
+        </p>
+        <ul>
+            <li>The content complies with all applicable laws and regulations.</li>
+            <li>You own the rights to the content or have the necessary permissions to upload and share it.</li>
+            <li>The content does not violate any third-party rights, including intellectual property rights, privacy rights, or contractual obligations.</li>
+        </ul>
+    </section>
+
+    <section class="policy-section">
+        <h3>Prohibited Content</h3>
+        <p>You agree not to upload, share, or distribute any content that:</p>
+        <ul>
+            <li>Contains illegal, harmful, abusive, defamatory, obscene, or offensive material.</li>
+            <li>Promotes violence, hate speech, or discrimination based on race, religion, gender, or any other characteristic.</li>
+            <li>Contains nudity, sexual content, or any material deemed inappropriate for a general audience.</li>
+            <li>Violates the privacy or personal information of any individual without their explicit consent.</li>
+        </ul>
+    </section>
+
+    <section class="policy-section">
+        <h3>Service Owner Disclaimer</h3>
+        <p>
+            <a href="http://194.182.84.188/" target="_blank">http://194.182.84.188/</a> is a platform for users to upload and share photos. As the service owner:
+        </p>
+        <ul>
+            <li>We do not monitor or pre-approve the content uploaded by users.</li>
+            <li>We are not responsible for any inappropriate, offensive, or illegal content that users upload.</li>
+            <li>We reserve the right to remove any content that violates this policy or is reported as inappropriate by other users, but we are not obligated to do so.</li>
+        </ul>
+    </section>
+
+    <section class="policy-section">
+        <h3>Reporting Inappropriate Content</h3>
+        <p>
+            If you encounter content that you believe violates this policy, please report it to us using the provided reporting mechanism <a href="{% url 'contact' %}">Contact Us</a>.
+        </p>
+    </section>
+
+    <section class="policy-section">
+        <h3>Termination of Use</h3>
+        <p>
+            We reserve the right to terminate your access to <a href="http://194.182.84.188/" target="_blank">http://194.182.84.188/</a> without prior notice if you violate this policy or any applicable laws.
+        </p>
+    </section>
+
+    <section class="policy-section">
+        <h3>Limitation of Liability</h3>
+        <p>
+            To the maximum extent permitted by law, <a href="http://194.182.84.188/" target="_blank">http://194.182.84.188/</a> and its owners, operators, and affiliates disclaim all liability for:
+        </p>
+        <ul>
+            <li>Any loss, damage, or harm caused by content uploaded by users.</li>
+            <li>Any issues arising from your use of the service, including technical difficulties or unauthorized access.</li>
+        </ul>
+    </section>
+
+    <section class="policy-section">
+        <h3>Policy Updates</h3>
+        <p>
+            We may update this policy from time to time. Continued use of the service after any changes constitutes your acceptance of the updated terms.
+        </p>
+    </section>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    h3 {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #444;
+    }
+    p {
+        margin: 10px 0;
+    }
+    ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+    li {
+        margin-bottom: 5px;
+    }
+    a {
+        color: #007BFF;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .last-updated {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+    }
+</style>
+{% endblock %}
