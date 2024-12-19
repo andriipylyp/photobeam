@@ -9,8 +9,10 @@
                 <label for="album_name">Enter new album name:</label>
                 <input type="text" id="album_name" name="album_name" required>
 
-                <label for="album_date">Choose event date:</label>
-                <input type="date" id="album_date" name="album_date" required>
+                <label for="album_date_start">Choose event start date:</label>
+                <input type="date" id="album_date_start" name="album_date_start" required>
+                <label for="album_date_end">Choose event end date:</label>
+                <input type="date" id="album_date_end" name="album_date_end" required>
                 <button type="button" id="create-album-btn" class="btn btn-create">Buy Album</button>
             </form>
         </div>
@@ -24,7 +26,8 @@
                             <h3>{{ album.name }}</h3>
                             <p><strong>ID:</strong> {{ album.unique_id }}</p>
                             <p><strong>Created At:</strong> {{ album.created_at }}</p>
-                            <p><strong>Event date:</strong> {{ album.event_date }}</p>
+                            <p><strong>Event start date:</strong> {{ album.event_date_start }}</p>
+                            <p><strong>Event end date:</strong> {{ album.event_date_end }}</p>
                             <p><strong>Count of images:</strong> {{ album.image_count }}</p>
                             <img src="data:image/png;base64,{{ album.qr_code }}" alt="QR Code" class="qr-code" id="qr-code-{{ album.unique_id }}">
                             <p><a href="{{ album.qr_url }}" class="qr-link">QR URL</a></p>
@@ -48,10 +51,11 @@
     <script>
         document.getElementById("create-album-btn").addEventListener("click", async function () {
             const albumName = document.getElementById("album_name").value.trim();
-            const albumDate = document.getElementById("album_date").value.trim();
+            const albumDateStart = document.getElementById("album_date_start").value.trim();
+            const albumDateEnd = document.getElementById("album_date_end").value.trim();
             const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
     
-            if (!albumName || !albumDate) {
+            if (!albumName || !albumDateStart || !albumDateEnd) {
                 alert("Please fill out all required fields.");
                 return;
             }
@@ -63,7 +67,7 @@
                         "Content-Type": "application/json",
                         "X-CSRFToken": csrfToken,
                     },
-                    body: JSON.stringify({ album_name: albumName, album_date: albumDate }),
+                    body: JSON.stringify({ album_name: albumName, album_date_start: albumDateStart, album_date_end: albumDateEnd}),
                 });
     
                 const data = await response.json();

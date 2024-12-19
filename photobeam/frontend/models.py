@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import os
 import uuid
 from django.db import models
@@ -5,6 +6,9 @@ from django.contrib.auth.models import User
 
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+
+def default_event_date_end():
+    return datetime.now() + timedelta(days=7)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -18,7 +22,8 @@ class Album(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="albums")
     unique_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    event_date = models.DateTimeField()
+    event_date_start = models.DateTimeField(default=datetime.now)
+    event_date_end = models.DateTimeField(default=default_event_date_end)
 
     def __str__(self):
         return f"Album for {self.user_profile.user.username} - {self.unique_id}"

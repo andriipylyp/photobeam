@@ -3,6 +3,7 @@ import json
 import time
 import uuid
 import zipfile
+from datetime import datetime
 from io import BytesIO
 import os
 from django.shortcuts import render, redirect
@@ -11,6 +12,7 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import now
 import qrcode
 import stripe
 from io import BytesIO
@@ -52,9 +54,11 @@ def register(request):
 def take_picture(request):
     album_id = request.GET.get("album_id")
     album = get_object_or_404(Album, unique_id=album_id)
-
+    current_datetime = now()
+    
     if request.method == "GET":
-        return render(request, "take_picture.html", {"album_id": album_id})
+        allowed = album.event_date_start <= current_datetime <= album.event_date_end
+        return render(request, "take_picture.html", {"album_id": album_id, "allowed": allowed})
     elif request.method == "POST":
         image = request.FILES.get("image")
         if image:
@@ -120,7 +124,8 @@ def profile(request):
             "unique_id": album.unique_id,
             "name": album.name,
             "created_at": album.created_at,
-            "event_date": album.event_date,
+            "event_date_start": album.event_date_start,
+            "event_date_end": album.event_date_end,
             "qr_code": img_base64,
             "qr_url": qr_url,
             "image_count": image_count,
@@ -214,12 +219,15 @@ def create_checkout_session(request):
     try:
         data = json.loads(request.body)
         album_name = data.get("album_name", "").strip()
-        album_date = data.get("album_date", "").strip()
+        album_date_start = data.get("album_date_start", "").strip()
+        album_date_end = data.get("album_date_end", "").strip()
 
         if not album_name:
             return JsonResponse({"error": "Album name is required"}, status=400)
-        if not album_date:
-            return JsonResponse({"error": "Album date is required"}, status=400)
+        if not album_date_start:
+            return JsonResponse({"error": "Album album date start is required"}, status=400)
+        if not album_date_start:
+            return JsonResponse({"error": "Album album date end is required"}, status=400)
         # Create a Stripe checkout session
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
@@ -236,7 +244,8 @@ def create_checkout_session(request):
 
         # Save session data for validation on success
         request.session["album_name"] = album_name
-        request.session["album_date"] = album_date
+        request.session["album_date_start"] = album_date_start
+        request.session["album_date_end"] = album_date_end
         request.session["checkout_session_id"] = checkout_session.id
 
         return JsonResponse({"checkout_url": checkout_session.url})
@@ -263,13 +272,16 @@ def create_album_success(request):
 
         # Get album name from session
         album_name = request.session.pop("album_name", "Unnamed Album")
-        album_date = request.session.pop("album_date", None)
-        if not album_date:
-            return HttpResponse("Album date missing. Album creation aborted.", status=400)
+        album_date_start = request.session.pop("album_date_start", None)
+        album_date_end = request.session.pop("album_date_end", None)
+        if not album_date_start:
+            return HttpResponse("Album start date missing. Album creation aborted.", status=400)
+        if not album_date_end:
+            return HttpResponse("Album end date missing. Album creation aborted.", status=400)
         user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
 
         # Create the album
-        Album.objects.create(user_profile=user_profile, name=album_name, event_date=album_date)
+        Album.objects.create(user_profile=user_profile, name=album_name, event_date_start=album_date_start, event_date_end=album_date_end)
 
         # Clean up session data
         request.session.pop("checkout_session_id", None)

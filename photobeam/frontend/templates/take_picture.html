@@ -9,8 +9,26 @@
     {% compress css %}
     <link rel="stylesheet" href="{% static 'scss/take_picture.scss' %}" type="text/x-scss">
     {% endcompress %}
+    <!-- <script>
+        window.onload = function() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isMobile = /android|iphone|ipad|ipod|windows phone|tablet/.test(userAgent);
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+        
+            // Set a threshold for mobile/tablet screen dimensions
+            const isRealMobile = isMobile && screenWidth <= 768 && screenHeight <= 1024;
+        
+            if (!isRealMobile) {
+                document.body.innerHTML = "<h1>Access restricted to real mobile or tablet devices only.</h1>";
+                document.body.style.textAlign = "center";
+                document.body.style.marginTop = "20%";
+            }
+        };
+    </script> -->
 </head>
 <body>
+    {% if allowed %}
     <h1>Take a Picture</h1>
     <form id="upload-form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -22,6 +40,7 @@
         <button type="button" id="rotate-right">Rotate Right</button><br><br>
         <button type="submit" class="btn-primary">Upload</button>
     </form>
+    {% endif %}
     <br>
     <a href="/album/?album_id={{ album_id }}" class="btn-secondary">Go to Album</a>
 
